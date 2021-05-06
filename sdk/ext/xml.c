@@ -20,23 +20,30 @@ limitations under the License.
 #include "ov_xml_reader.h"
 #include "ov_xml_writer.h"
 
+
 #if PY_MAJOR_VERSION >= 3
-PyObject* PyInit_xml(void) {
+PyMODINIT_FUNC PyInit_xml(void) {
 #else
 void initxml(void) {
 #endif
 
+#ifdef Py_mod_exec
+    return PyModuleDef_Init(&ov_xml_module_definition);
+#else
     /* Define the module: */
     ov_xml_module_define();
+#endif
 #if PY_MAJOR_VERSION >= 3
     if (ov_xml_module == NULL) {
         return NULL;
     }
 #endif
 
+#ifndef Py_mod_exec
     /* Define the classes: */
     ov_xml_reader_define();
     ov_xml_writer_define();
+#endif
 
 #if PY_MAJOR_VERSION >= 3
     return ov_xml_module;

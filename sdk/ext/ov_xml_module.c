@@ -17,18 +17,32 @@ limitations under the License.
 #include <Python.h>
 
 #include "ov_xml_module.h"
+#include "ov_xml_reader.h"
+#include "ov_xml_writer.h"
 
 /* Module: */
 PyObject* ov_xml_module;
 
+#ifdef Py_mod_exec
+static PyModuleDef_Slot ov_xml_module_slots[] = {
+    {Py_mod_exec, ov_xml_reader_define},
+    {Py_mod_exec, ov_xml_writer_define},
+    {0, NULL}
+};
+#endif
+
 #if PY_MAJOR_VERSION >= 3
-static struct PyModuleDef ov_xml_module_definition = {
+static PyModuleDef ov_xml_module_definition = {
     PyModuleDef_HEAD_INIT,
     /* m_name     */ OV_XML_MODULE_NAME,
     /* m_doc      */ 0,
     /* m_size     */ 0,
     /* m_methods  */ 0,
+#ifdef Py_mod_exec
+    ov_xml_module_slots,
+#else
     /* m_reload   */ 0,
+#endif
     /* m_traverse */ 0,
     /* m_clear    */ 0,
     /* m_free     */ 0
