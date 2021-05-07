@@ -427,8 +427,11 @@ void ov_xml_writer_define(void) {
 
     /* Add the classes to the module: */
     Py_INCREF(&ov_xml_writer_type);
+#ifdef Py_mod_exec
+    PyModule_AddObject(module, "XmlWriter", (PyObject*) &ov_xml_writer_type);
+#else
     PyModule_AddObject(ov_xml_module, "XmlWriter", (PyObject*) &ov_xml_writer_type);
-
+#endif
     /* Import modules: */
     io_module = PyImport_ImportModule("io");
     if (io_module == NULL) {
