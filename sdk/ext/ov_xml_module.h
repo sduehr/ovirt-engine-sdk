@@ -28,4 +28,8 @@ extern PyObject* ov_xml_module;
 /* Initialization function: */
 extern void ov_xml_module_define(void);
 
+#ifdef Py_mod_exec
+extern PyObject* ov_xml_module_def_init(void);
+#endif
+
 #endif
