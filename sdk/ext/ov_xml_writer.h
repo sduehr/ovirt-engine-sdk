@@ -20,6 +20,9 @@ limitations under the License.
 #include <Python.h>
 
 /* Initialization function: */
-extern void ov_xml_writer_define(void);
-
+#ifdef Py_mod_exec
+extern int ov_xml_writer_define(PyObject* module);
+#else
+extern void ov_xml_writer_define();
+#endif
 #endif

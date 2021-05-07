@@ -42,9 +42,9 @@ void initxml(void) {
   /* Define the classes: */
   ov_xml_reader_define();
   ov_xml_writer_define();
-#endif
 
 #if PY_MAJOR_VERSION >= 3
   return ov_xml_module;
+#endif
 #endif
 }
