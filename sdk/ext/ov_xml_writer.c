@@ -409,22 +409,38 @@ static PyTypeObject ov_xml_writer_type = {
     /* tp_new            */ 0,
 };
 
+
+#ifdef Py_mod_exec
+int ov_xml_writer_define(PyObject* module) {
+#else
 void ov_xml_writer_define(void) {
+#endif
     /* Create the class: */
     ov_xml_writer_type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&ov_xml_writer_type) < 0) {
+#ifdef Py_mod_exec
+        return 0;
+#else
         return;
+#endif
     }
 
     /* Add the classes to the module: */
     Py_INCREF(&ov_xml_writer_type);
+#ifdef Py_mod_exec
+    PyModule_AddObject(module, "XmlWriter", (PyObject*) &ov_xml_writer_type);
+#else
     PyModule_AddObject(ov_xml_module, "XmlWriter", (PyObject*) &ov_xml_writer_type);
-
+#endif
     /* Import modules: */
     io_module = PyImport_ImportModule("io");
     if (io_module == NULL) {
         PyErr_Format(PyExc_Exception, "Can't import the 'io' module");
+#ifdef Py_mod_exec
+        return 0;
+#else
         return;
+#endif
     }
     Py_INCREF(io_module);
 
@@ -432,7 +448,14 @@ void ov_xml_writer_define(void) {
     bytes_io_class = PyObject_GetAttrString(io_module, "BytesIO");
     if (bytes_io_class == NULL) {
         PyErr_Format(PyExc_Exception, "Can't locate the 'io.BytesIO' class");
+#ifdef Py_mod_exec
+        return 0;
+#else
         return;
+#endif
     }
     Py_INCREF(bytes_io_class);
+#ifdef Py_mod_exec
+    return 0;
+#endif
 }
