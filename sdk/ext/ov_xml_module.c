@@ -22,7 +22,7 @@ limitations under the License.
 #include "ov_xml_writer.h"
 
 /* Module: */
-PyObject* ov_xml_module;
+_Thread_local PyObject* ov_xml_module;
 
 #ifdef Py_mod_exec
 static PyModuleDef_Slot ov_xml_module_slots[] = {
